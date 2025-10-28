@@ -13,6 +13,6 @@
         <TextField fx:id="userName" />
         <Label text="your message"/>
         <TextField fx:id="msg"/>
-        <Button fx:id="submitButton" text="Submit" onAction="submitMsg"/>
+        <Button fx:id="submitButton" text="Submit"/>
     </VBox>
 </VBox>
