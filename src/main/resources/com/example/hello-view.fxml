@@ -4,8 +4,8 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
-        <Label fx:id="messageLabel" text="Hello, JavaFX!" />
+<VBox alignment="center" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
+    <Label fx:id="messageLabel" text="Welcome to the messageboard" />
 
    <TextFlow fx:id="messageBoard" prefHeight="200.0" prefWidth="200.0" />
 </VBox>
