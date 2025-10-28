@@ -24,5 +24,8 @@ public class HelloController {
 
     }
 
+    public HelloModel getModel() {
+        return model;
+    }
 
 }
