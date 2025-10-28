@@ -1,10 +1,12 @@
 package com.example;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -14,6 +16,10 @@ public class HelloController {
     public ListView<String> listView;
     private final HelloModel model = new HelloModel();
     public TextFlow messageBoard;
+    public VBox newMessage;
+    public TextField userName;
+    public TextField msg;
+    public Button submitButton;
 
     @FXML
     private Label messageLabel;
@@ -21,6 +27,10 @@ public class HelloController {
     @FXML
     private void initialize() {
         listView = new ListView<>();
+        messageBoard.getChildren().add(model.getText_1());
+    }
+
+    private void getMessage() {
 
     }
 
