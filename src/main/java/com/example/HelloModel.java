@@ -7,26 +7,17 @@ import javafx.beans.property.StringProperty;
  * Model layer: encapsulates application data and business logic.
  */
 public class HelloModel {
-    private final StringProperty messageBoardProperty;
-    public HelloModel() {
-        messageBoardProperty = new SimpleStringProperty("");
+    private StringProperty msgBoard;
+
+    public String getMsgBoard() {
+        return msgBoard.get();
     }
 
-    public void setMessageBoardProperty(String messageBoardProperty) {
-        messageBoardProperty.isEmpty();
+    public StringProperty msgBoardProperty() {
+        return msgBoard;
     }
 
-    public String getMessageBoard() {
-        return messageBoardProperty.get();
-    }
-
-    public String getGreeting() {
-        String javaVersion = System.getProperty("java.version");
-        String javafxVersion = System.getProperty("javafx.version");
-        return "Hello, JavaFX " + javafxVersion + ", running on Java " + javaVersion + ".";
-    }
-
-    public String getMessage() {
-        return "";
+    public void setMsgBoard(String msgBoard) {
+        this.msgBoard.set(msgBoard);
     }
 }

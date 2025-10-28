@@ -4,12 +4,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 
 /**
  * Controller layer: mediates between the view (FXML) and the model.
  */
 public class HelloController {
-    public ObservableList<Label> chatList = FXCollections.observableArrayList();
+    public ListView<String> listView;
     private final HelloModel model = new HelloModel();
     public Label messageBoard;
 
@@ -18,11 +19,7 @@ public class HelloController {
 
     @FXML
     private void initialize() {
-        if (messageLabel != null) {
-            messageLabel.setText(model.getGreeting());
-        }
-        if (messageBoard != null) {
-            messageBoard.setText(chatList.toString());
-        }
+        listView = new ListView<>();
+
     }
 }
