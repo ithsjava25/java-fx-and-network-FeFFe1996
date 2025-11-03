@@ -27,7 +27,7 @@ public class HelloController {
     @FXML
     private void initialize() {
         listView = new ListView<>();
-        messageBoard.getChildren().add(model.getText_1());
+        messageBoard.getChildren().add(model.text_1);
     }
 
     private void getMessage() {
