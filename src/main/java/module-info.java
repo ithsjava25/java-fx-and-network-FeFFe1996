@@ -3,6 +3,7 @@ module hellofx {
     requires javafx.fxml;
     requires java.desktop;
     requires io.github.cdimascio.dotenv.java;
+    requires java.net.http;
 
     opens com.example to javafx.fxml;
     exports com.example;
