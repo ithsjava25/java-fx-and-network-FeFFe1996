@@ -21,7 +21,7 @@ import java.util.Objects;
  * Model layer: encapsulates application data and business logic.
  */
 public class HelloModel {
-    ObservableList<TextFlow> msgList = FXCollections.observableArrayList();
+    ObservableList<String> msgList = FXCollections.observableArrayList();
     private final String hostName;
     TextFlow text_flow = new TextFlow();
     Text timeStamp = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm")));
@@ -29,17 +29,18 @@ public class HelloModel {
     HelloModel(){
         Dotenv dotenv = Dotenv.load();
         hostName = Objects.requireNonNull(dotenv.get("HOST_NAME"));
+        msgList.add("Hello World!");
     }
 
-    public ObservableList<TextFlow> getMsgList() {
+    public ObservableList<String> getMsgList() {
         return msgList;
     }
 
-    public void setMsgList(ObservableList<TextFlow> msgList) {
+    public void setMsgList(ObservableList<String> msgList) {
         this.msgList = msgList;
     }
 
-    public void sendMsg() {
+    public void sendMsg( TextField userName, TextField msg) {
         //Todo: send message with httpclient
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -52,6 +53,7 @@ public class HelloModel {
             //1. use thread send message
             //2. use async
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            msgList.add(response.toString());
         }catch (IOException e){
             System.out.println("IOException sending message");
         }catch (InterruptedException e){

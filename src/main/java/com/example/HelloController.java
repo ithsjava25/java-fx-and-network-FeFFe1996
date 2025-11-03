@@ -10,6 +10,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
@@ -19,6 +20,7 @@ public class HelloController {
     public ListView<String> listView;
     private final HelloModel model = new HelloModel();
     public TextFlow messageBoard;
+    public Text Messages;
     public VBox newMessage;
     public TextField userName;
     public TextField msg;
@@ -30,7 +32,9 @@ public class HelloController {
     @FXML
     private void initialize() {
         listView = new ListView<>();
+        listView.setItems(model.msgList);
         messageBoard.getChildren().add(model.timeStamp);
+        Messages.setText("Hello World!");
     }
 
     public HelloModel getModel() {
@@ -38,6 +42,8 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        model.sendMsg();
+        model.sendMsg(userName, msg);
+        msg.clear();
+        userName.clear();
     }
 }
