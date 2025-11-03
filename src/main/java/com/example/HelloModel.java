@@ -1,46 +1,47 @@
 package com.example;
 
-import com.google.gson.Gson;
 import io.github.cdimascio.dotenv.Dotenv;
-import javafx.scene.control.ListView;
-import javafx.scene.text.Text;
-
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Objects;
+
 
 /**
  * Model layer: encapsulates application data and business logic.
  */
 public class HelloModel {
-    ListView<String> msgList = new ListView<>();
+    //private final ArrayList<NtfyMessageDto> msgList = new ArrayList<>();
+    private final ObjectMapper mapper = new ObjectMapper();
+
+    private final ObservableList<NtfyMessageDto> msgList = FXCollections.observableArrayList();
     private final HttpClient client = HttpClient.newHttpClient();
     private final String hostName;
-    public Gson gson = new Gson();
     private String topicName;
-    Text timeStamp = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm")));
+
 
     HelloModel(){
         Dotenv dotenv = Dotenv.load();
         hostName = Objects.requireNonNull(dotenv.get("HOST_NAME"));
     }
 
-    public String createJson(){
-        return gson.toJson("hello world");
+    public ObservableList<NtfyMessageDto> getMsgList() {
+        return msgList;
     }
 
-    public void sendMsg() {
-        //Todo: send message with httpclient
+    public void sendMsg(String msg) {
+
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(20))
-                .POST(HttpRequest.BodyPublishers.ofString(createJson()))
+                .POST(HttpRequest.BodyPublishers.ofString("Hello World!"))
                 .uri(URI.create(hostName + "/mytopic"))
                 .build();
         try {
@@ -62,6 +63,11 @@ public class HelloModel {
                 .build();
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
-                .thenAccept(response -> response.body().forEach(System.out::println));
+                .thenAccept(response -> response.body()
+                        .map(s -> mapper.readValue(s, NtfyMessageDto.class))
+                        .filter(message->message.event().equals("message"))
+                        //.peek(System.out::println) //debugger to check messages that comes in
+                        .forEach(s ->
+                                Platform.runLater(() -> msgList.add(s))));
     }
 }
