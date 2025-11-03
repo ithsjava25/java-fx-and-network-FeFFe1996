@@ -5,16 +5,12 @@
 <?import javafx.scene.text.*?>
 
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
-    <Label fx:id="messageLabel" text="Welcome to the messageboard" />
-
-    <TextFlow fx:id="messageBoard" prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
-        <Text fx:id="messages"/>
+    <Label fx:id="messageLabel" text="Welcome to the messageboard" alignment="CENTER"/>
+    <TextFlow fx:id="messageBoard" prefWidth="200.0" textAlignment="CENTER">
     </TextFlow>
-    <VBox fx:id="newMessage">
-        <Label text="your name" />
-        <TextField fx:id="userName" />
+    <VBox fx:id="newMessage" alignment="CENTER">
         <Label text="your message"/>
-        <TextField fx:id="msg"/>
+        <TextField fx:id="msg" maxWidth="500" prefHeight="30" />
         <Button fx:id="submitButton" text="Submit" onAction="#submitMsg"/>
     </VBox>
 </VBox>

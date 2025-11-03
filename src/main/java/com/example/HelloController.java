@@ -1,28 +1,26 @@
 package com.example;
 
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
 /**
  * Controller layer: mediates between the view (FXML) and the model.
  */
 public class HelloController {
-    public ListView<String> listView;
+    public ObservableList<String> listView = FXCollections.observableArrayList();
     private final HelloModel model = new HelloModel();
+
     public TextFlow messageBoard;
-    public Text Messages;
+
     public VBox newMessage;
-    public TextField userName;
     public TextField msg;
     public Button submitButton;
 
@@ -31,10 +29,9 @@ public class HelloController {
 
     @FXML
     private void initialize() {
-        listView = new ListView<>();
-        listView.setItems(model.msgList);
-        messageBoard.getChildren().add(model.timeStamp);
-        Messages.setText("Hello World!");
+        messageBoard.getChildren().add(model.msgList);
+        listView.add(model.msgList.getSelectionModel().getSelectedItem());
+        model.receiveMsg();
     }
 
     public HelloModel getModel() {
@@ -42,8 +39,7 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        model.sendMsg(userName, msg);
+        model.sendMsg();
         msg.clear();
-        userName.clear();
     }
 }

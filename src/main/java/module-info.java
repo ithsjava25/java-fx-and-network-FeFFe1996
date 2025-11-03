@@ -4,6 +4,7 @@ module hellofx {
     requires java.desktop;
     requires io.github.cdimascio.dotenv.java;
     requires java.net.http;
+    requires com.google.gson;
 
     opens com.example to javafx.fxml;
     exports com.example;

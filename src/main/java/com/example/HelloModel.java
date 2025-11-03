@@ -1,13 +1,12 @@
 package com.example;
 
+import com.google.gson.Gson;
 import io.github.cdimascio.dotenv.Dotenv;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TextField;
+import javafx.scene.control.ListView;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,43 +20,48 @@ import java.util.Objects;
  * Model layer: encapsulates application data and business logic.
  */
 public class HelloModel {
-    ObservableList<String> msgList = FXCollections.observableArrayList();
+    ListView<String> msgList = new ListView<>();
+    private final HttpClient client = HttpClient.newHttpClient();
     private final String hostName;
-    TextFlow text_flow = new TextFlow();
+    public Gson gson = new Gson();
+    private String topicName;
     Text timeStamp = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm")));
 
     HelloModel(){
         Dotenv dotenv = Dotenv.load();
         hostName = Objects.requireNonNull(dotenv.get("HOST_NAME"));
-        msgList.add("Hello World!");
     }
 
-    public ObservableList<String> getMsgList() {
-        return msgList;
+    public String createJson(){
+        return gson.toJson("hello world");
     }
 
-    public void setMsgList(ObservableList<String> msgList) {
-        this.msgList = msgList;
-    }
-
-    public void sendMsg( TextField userName, TextField msg) {
+    public void sendMsg() {
         //Todo: send message with httpclient
-        HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(20))
-                .POST(HttpRequest.BodyPublishers.ofString("Hello World"))
-                .uri(URI.create(hostName + "/myTopic"))
+                .POST(HttpRequest.BodyPublishers.ofString(createJson()))
+                .uri(URI.create(hostName + "/mytopic"))
                 .build();
         try {
             //TODO: handle long blocking send request so application doesnt freeze
             //1. use thread send message
             //2. use async
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            msgList.add(response.toString());
         }catch (IOException e){
             System.out.println("IOException sending message");
         }catch (InterruptedException e){
             System.out.println("Interrupted sending message");
         }
+    }
+
+    public void receiveMsg(){
+        HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(URI.create(hostName + "/mytopic/json"))
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
+                .thenAccept(response -> response.body().forEach(System.out::println));
     }
 }
