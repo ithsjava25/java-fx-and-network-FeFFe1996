@@ -1,5 +1,6 @@
 package com.example;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,14 +12,14 @@ public class HelloFX extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        String url = System.getenv("HOST_NAME");
+        Dotenv dotenv = Dotenv.load();
+        String url = dotenv.get("HOST_NAME");
         FXMLLoader fxmlLoader = new FXMLLoader(HelloFX.class.getResource("hello-view.fxml"));
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root, 640, 480);
         stage.setTitle("Hello MVC");
         stage.setScene(scene);
         stage.show();
-
     }
 
     public static void main(String[] args) {
