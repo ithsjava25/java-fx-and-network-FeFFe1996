@@ -5,6 +5,9 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * Model layer: encapsulates application data and business logic.
  */
@@ -12,6 +15,8 @@ public class HelloModel {
     private StringProperty msgBoard;
     TextFlow text_flow = new TextFlow();
     Text text_1 = new Text("Hello World");
+
+    Text timeStamp = new Text(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm")));
 
     public TextFlow getText_flow() {
         return text_flow;
@@ -23,6 +28,10 @@ public class HelloModel {
 
     public Text getText_1() {
         return text_1;
+    }
+
+    public Text getTimeStamp() {
+        return timeStamp;
     }
 
     public String getMsgBoard() {
