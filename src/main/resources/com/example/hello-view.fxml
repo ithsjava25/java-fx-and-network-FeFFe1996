@@ -7,7 +7,7 @@
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
     <Label fx:id="messageLabel" text="Welcome to the messageboard" />
 
-   <TextFlow fx:id="messageBoard" prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER"/>
+    <TextFlow fx:id="messageBoard" prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER"/>
     <VBox fx:id="newMessage">
         <Label text="your name" />
         <TextField fx:id="userName" />
