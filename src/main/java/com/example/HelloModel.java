@@ -6,6 +6,8 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.stream.Collectors;
+
 /**
  * Model layer: encapsulates application data and business logic.
  */
@@ -19,16 +21,16 @@ public class HelloModel{
 
 
     public HelloModel(NtfyConnection connection){
-        receiveMsg();
         this.connection = connection;
+        receiveMsg();
     }
 
     public ObservableList<String> getMessage() {
+            //message = message.add(msgList.stream().map(p -> p.message()).collect(Collectors.toCollection()));
             return message;
     }
 
     public ObservableList<NtfyMessageDto> getMsgList() {
-        msgList.stream().map(NtfyMessageDto::message).forEach(message::add);
         return msgList;
     }
 

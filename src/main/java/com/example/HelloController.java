@@ -3,17 +3,13 @@ package com.example;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-
 import javafx.scene.layout.VBox;
-
-import java.util.stream.Collectors;
-
 
 /**
  * Controller layer: mediates between the view (FXML) and the model.
  */
 public class HelloController {
-    private final HelloModel model = new HelloModel(null);
+    private final HelloModel model = new HelloModel(new NtfyConnectionImpl());
 
     public ListView<NtfyMessageDto> messageBoard;
     public ListView<String> messageList;
