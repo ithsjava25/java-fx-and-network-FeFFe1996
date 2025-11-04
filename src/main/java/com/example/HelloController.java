@@ -1,13 +1,15 @@
 package com.example;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.TextFlow;
+
+import java.util.stream.Collectors;
 
 
 /**
@@ -17,10 +19,11 @@ public class HelloController {
     private final HelloModel model = new HelloModel();
 
     public ListView<NtfyMessageDto> messageBoard;
-
+    public ListView<String> messageList;
     public VBox newMessage;
     public TextField msg;
     public Button submitButton;
+    public Label errorIsEmpty;
 
     @FXML
     private Label messageLabel;
@@ -28,6 +31,7 @@ public class HelloController {
     @FXML
     private void initialize() {
         messageBoard.setItems(model.getMsgList());
+        errorIsEmpty.setVisible(false);
         model.receiveMsg();
     }
 
@@ -36,7 +40,14 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        model.sendMsg(msg.getText());
-        msg.clear();
+        if (msg.getText().equals("")) {
+            errorIsEmpty.setVisible(true);
+            errorIsEmpty.setText("Please enter a message");
+        }else {
+            model.sendMsg(msg.getText());
+            msg.clear();
+            errorIsEmpty.setVisible(false);
+        }
+
     }
 }

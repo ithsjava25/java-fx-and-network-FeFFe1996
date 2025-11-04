@@ -7,8 +7,10 @@
 <VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
     <Label fx:id="messageLabel" text="Welcome to the messageboard" alignment="CENTER"/>
     <ListView fx:id="messageBoard" prefWidth="200.0"  />
+    <ListView fx:id="messageList" />
     <VBox fx:id="newMessage" alignment="CENTER">
         <Label text="your message"/>
+        <Label fx:id="errorIsEmpty" />
         <TextField fx:id="msg" maxWidth="500" prefHeight="30" />
         <Button fx:id="submitButton" text="Submit" onAction="#submitMsg"/>
     </VBox>
