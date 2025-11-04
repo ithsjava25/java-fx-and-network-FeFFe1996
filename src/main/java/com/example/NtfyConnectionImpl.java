@@ -22,12 +22,16 @@ public class NtfyConnectionImpl implements NtfyConnection {
         hostName = Objects.requireNonNull(dotenv.get("HOST_NAME"));
     }
 
+    public NtfyConnectionImpl(String hostName){
+        this.hostName = hostName;
+    }
+
     @Override
     public boolean send(String message) {
                     HttpRequest request = HttpRequest.newBuilder()
                     .timeout(Duration.ofSeconds(20))
-                    //.POST(HttpRequest.BodyPublishers.ofString(msg))
-                    .POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
+                    .POST(HttpRequest.BodyPublishers.ofString(message))
+                    //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
                     .uri(URI.create(hostName + "/mytopic"))
                     .build();
             try {

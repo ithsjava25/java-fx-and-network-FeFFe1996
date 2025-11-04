@@ -17,7 +17,7 @@ public class HelloModel{
     private final StringProperty msgToSend = new SimpleStringProperty();
 
     private final ObservableList<NtfyMessageDto> msgList = FXCollections.observableArrayList();
-    private final ObservableList<String> message = FXCollections.observableArrayList();
+    private final ObservableList<String> message = FXCollections.observableArrayList(msgList.stream().map(NtfyMessageDto::message).collect(Collectors.toList()));
 
 
     public HelloModel(NtfyConnection connection){
@@ -26,7 +26,6 @@ public class HelloModel{
     }
 
     public ObservableList<String> getMessage() {
-            //message = message.add(msgList.stream().map(p -> p.message()).collect(Collectors.toCollection()));
             return message;
     }
 
@@ -47,11 +46,14 @@ public class HelloModel{
     }
 
     public void sendMsg() {
-        connection.send(msgToSend.get());
+        connection.send(getMsgToSend());
     }
 
     public void receiveMsg(){
-        connection.receive(m -> Platform.runLater(
-                ()-> msgList.add(m)));
+        connection.receive(m -> {
+            Platform.runLater(
+                    ()-> msgList.add(m));
+            message.setAll(msgList.stream().map(NtfyMessageDto::message).collect(Collectors.toList()));
+        });
     }
 }

@@ -24,6 +24,7 @@ public class HelloController {
     @FXML
     private void initialize() {
         messageBoard.setItems(model.getMsgList());
+        messageList.setItems(model.getMessage());
         errorIsEmpty.setVisible(false);
     }
 
