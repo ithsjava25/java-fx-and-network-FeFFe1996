@@ -19,6 +19,8 @@ public class HelloController {
     public Label errorIsEmpty;
     public TextField topic;
     public Label errorTopicIsEmpty;
+    public Label yourTopic;
+    public Label yourMsg;
 
     @FXML
     private Label messageLabel;

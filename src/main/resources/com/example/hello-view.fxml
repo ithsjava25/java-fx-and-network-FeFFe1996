@@ -9,10 +9,10 @@
 <!--    <ListView fx:id="messageBoard" maxWidth="300.0"  /> used for testing and show all entries from get-->
     <ListView fx:id="messageList" />
     <VBox fx:id="newMessage" alignment="CENTER">
-        <Label text="Topic" />
+        <Label fx:id="yourTopic" text="Topic" />
         <Label fx:id="errorTopicIsEmpty" />
         <TextField fx:id="topic" maxWidth="400" prefHeight="30" />
-        <Label text="your message"/>
+        <Label fx:id="yourMsg" text="your message"/>
         <Label fx:id="errorIsEmpty" />
         <TextField fx:id="msg" maxWidth="400" prefHeight="30" />
         <Button fx:id="submitButton" text="Submit" onAction="#submitMsg"/>
