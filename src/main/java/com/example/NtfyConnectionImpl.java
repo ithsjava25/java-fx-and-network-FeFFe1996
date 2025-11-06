@@ -27,13 +27,17 @@ public class NtfyConnectionImpl implements NtfyConnection {
     }
 
     @Override
-    public boolean send(String message) {
-                    HttpRequest request = HttpRequest.newBuilder()
-                    .timeout(Duration.ofSeconds(20))
-                    .POST(HttpRequest.BodyPublishers.ofString(message))
-                    //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
-                    .uri(URI.create(hostName + "/mytopic"))
-                    .build();
+    public boolean send(String topic, String message) {
+        messageToJson newMessage = new messageToJson("mytopic", message);
+        String Json = mapper.writeValueAsString(newMessage);
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .timeout(Duration.ofSeconds(20))
+                .header("Content-Type", "application/json")
+                .POST(HttpRequest.BodyPublishers.ofString(Json))
+                //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
+                .uri(URI.create(hostName))
+                .build();
             try {
                 //TODO: handle long blocking send request so application doesnt freeze
                 //1. use thread send message

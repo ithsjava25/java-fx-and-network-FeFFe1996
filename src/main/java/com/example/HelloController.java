@@ -17,15 +17,18 @@ public class HelloController {
     public TextField msg;
     public Button submitButton;
     public Label errorIsEmpty;
+    public TextField topic;
+    public Label errorTopicIsEmpty;
 
     @FXML
     private Label messageLabel;
 
     @FXML
     private void initialize() {
-        messageBoard.setItems(model.getMsgList());
+        //messageBoard.setItems(model.getMsgList());
         messageList.setItems(model.getMessage());
         errorIsEmpty.setVisible(false);
+        errorTopicIsEmpty.setVisible(false);
     }
 
     public HelloModel getModel() {
@@ -33,14 +36,19 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        if (msg.getText().isEmpty()) {
+        if (topic.getText().isEmpty()) {
+            errorTopicIsEmpty.setVisible(true);
+            errorTopicIsEmpty.setText("Please enter a topic");
+        }else if (msg.getText().isEmpty()) {
             errorIsEmpty.setVisible(true);
             errorIsEmpty.setText("Please enter a message");
         }else {
             model.setMsgToSend(msg.getText());
+            model.setMsgTopic(topic.getText());
             model.sendMsg();
             msg.clear();
             errorIsEmpty.setVisible(false);
+            errorTopicIsEmpty.setVisible(false);
         }
 
     }

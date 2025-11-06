@@ -15,14 +15,26 @@ public class HelloModel{
     private final NtfyConnection connection;
 
     private final StringProperty msgToSend = new SimpleStringProperty();
+    private final StringProperty msgTopic = new SimpleStringProperty();
 
     private final ObservableList<NtfyMessageDto> msgList = FXCollections.observableArrayList();
     private final ObservableList<String> message = FXCollections.observableArrayList();
 
-
     public HelloModel(NtfyConnection connection){
         this.connection = connection;
         receiveMsg();
+    }
+
+    public String getMsgTopic() {
+        return msgTopic.get();
+    }
+
+    public StringProperty msgTopicProperty() {
+        return msgTopic;
+    }
+
+    public void setMsgTopic(String msgTopic) {
+        this.msgTopic.set(msgTopic);
     }
 
     public ObservableList<String> getMessage() {
@@ -46,7 +58,7 @@ public class HelloModel{
     }
 
     public void sendMsg() {
-        connection.send(getMsgToSend());
+        connection.send(getMsgTopic(), getMsgToSend());
     }
 
     public void receiveMsg(){
