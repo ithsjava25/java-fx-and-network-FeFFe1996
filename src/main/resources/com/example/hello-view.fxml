@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
+<VBox stylesheets="@../../css/style.css" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
     <Label fx:id="messageLabel" text="Welcome to the messageboard" alignment="CENTER"/>
 <!--    <ListView fx:id="messageBoard" maxWidth="300.0"  /> used for testing and show all entries from get-->
     <ListView fx:id="messageList" />
