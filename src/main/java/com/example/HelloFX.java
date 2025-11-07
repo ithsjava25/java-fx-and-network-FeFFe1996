@@ -16,7 +16,7 @@ public class HelloFX extends Application {
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloFX.class.getResource("hello-view.fxml"));
         Parent root = fxmlLoader.load();
-        Scene scene = new Scene(root, 640, 480);
+        Scene scene = new Scene(root, 800, 600);
         stage.setTitle("Ntfy chat window");
         stage.setScene(scene);
         stage.show();

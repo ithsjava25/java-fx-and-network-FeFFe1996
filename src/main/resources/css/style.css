@@ -35,3 +35,7 @@
 .text-field{
     -fx-font-size: 15px;
 }
+
+.button{
+    -fx-font-size: 15px;
+}

@@ -8,7 +8,8 @@
     <Label fx:id="messageLabel" text="Welcome to the messageboard" alignment="CENTER"/>
 <!--    <ListView fx:id="messageBoard" maxWidth="300.0"  /> used for testing and show all entries from http GET-->
     <ListView fx:id="messageList" />
-    <VBox fx:id="newMessage" alignment="CENTER">
+
+    <VBox fx:id="newMessage" alignment="CENTER" spacing="10">
         <Label fx:id="yourTopic" text="Topic" />
         <Label fx:id="errorTopicIsEmpty" />
         <TextField fx:id="topic" maxWidth="400" prefHeight="30" />

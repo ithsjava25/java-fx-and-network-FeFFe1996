@@ -34,7 +34,7 @@ public class HelloModel{
     }
 
     public void setMsgTopic(String msgTopic) {
-        this.msgTopic.set(msgTopic);
+        this.msgTopic.set(msgTopic.trim().replaceAll(" ", ""));
     }
 
     public ObservableList<String> getMessage() {
@@ -58,7 +58,7 @@ public class HelloModel{
     }
 
     public void setMsgToSend(String msgToSend) {
-        this.msgToSend.set(msgToSend);
+        this.msgToSend.set(msgToSend.trim());
     }
 
     public void sendMsg() {

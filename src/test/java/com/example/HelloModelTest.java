@@ -20,6 +20,7 @@ class HelloModelTest {
         var spy = new NtfyConnectionSpy();
         var model = new HelloModel(spy);
         model.setMsgToSend("Hello World");
+        model.setMsgTopic("mytopic");
         //Act___When
         model.sendMsg();
         //Assert__then
@@ -32,7 +33,9 @@ class HelloModelTest {
         var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
         var model = new HelloModel(con);
         model.setMsgToSend("Hello World");
-        stubFor(post("/mytopic").willReturn(ok()));
+        model.setMsgTopic("mytopic");
+        messageToJson messageToJson = new messageToJson(model.getMsgTopic(),  model.getMsgToSend());
+        stubFor(post(messageToJson.topic).willReturn(ok()));
         model.sendMsg();
 
         //verify call made to server
@@ -41,8 +44,20 @@ class HelloModelTest {
     }
 
     @Test
-    void sendMessageIsntEmptyStrings(WireMockRuntimeInfo wmRuntimeInfo) {
-        var con =  new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+    void trimMessagesToSendForNoWhiteSpaceInStartOrEnd(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
         var model = new HelloModel(con);
+        model.setMsgToSend("   Hello World   ");
+
+        assertThat(model.getMsgToSend()).isEqualTo("Hello World");
+    }
+
+    @Test
+    void trimTopicForToAssertItHasNoWhiteSpace(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+        var model = new HelloModel(con);
+        model.setMsgTopic("   this topic   ");
+
+        assertThat(model.getMsgTopic()).isEqualTo("thistopic");
     }
 }
