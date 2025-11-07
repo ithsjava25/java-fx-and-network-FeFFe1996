@@ -21,6 +21,7 @@ public class HelloController {
     public Label errorTopicIsEmpty;
     public Label yourTopic;
     public Label yourMsg;
+    public Button changeTopicButton;
 
     @FXML
     private Label messageLabel;
@@ -28,12 +29,17 @@ public class HelloController {
     @FXML
     private void initialize() {
         //messageBoard.setItems(model.getMsgList());
-        if(topic == null){
+        if(topic != null){
             topic.setText("mytopic");
+            model.setMsgTopic(topic.getText());
         }
+//        topic.textProperty().addListener((observable, oldValue, newValue) -> {
+//            System.out.println(newValue);
+//        }); used to se input in topic window
         messageList.setItems(model.getMessage());
         errorIsEmpty.setVisible(false);
         errorTopicIsEmpty.setVisible(false);
+        model.receiveMsg();
     }
 
     public HelloModel getModel() {
@@ -41,20 +47,25 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        if (topic.getText().isEmpty()) {
-            errorTopicIsEmpty.setVisible(true);
-            errorTopicIsEmpty.setText("Please enter a topic");
-        }else if (msg.getText().isEmpty()) {
+        if (msg.getText().isEmpty()) {
             errorIsEmpty.setVisible(true);
             errorIsEmpty.setText("Please enter a message");
         }else {
             model.setMsgToSend(msg.getText());
-            model.setMsgTopic(topic.getText());
             model.sendMsg();
             msg.clear();
             errorIsEmpty.setVisible(false);
-            errorTopicIsEmpty.setVisible(false);
         }
+    }
 
+    public void changeTopic(ActionEvent actionEvent) {
+        if (topic.getText().isEmpty()) {
+            errorTopicIsEmpty.setVisible(true);
+            errorTopicIsEmpty.setText("Please enter a topic");
+        }
+        model.setMsgTopic(topic.getText());
+        errorTopicIsEmpty.setVisible(false);
+        model.receiveMsg();
+        model.clearMessage();
     }
 }

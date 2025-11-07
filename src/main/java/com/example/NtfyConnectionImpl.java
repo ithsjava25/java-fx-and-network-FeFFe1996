@@ -54,9 +54,10 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
     @Override
     public void receive(String topic, Consumer<NtfyMessageDto> messageHandler) {
+        String url = hostName+"/"+topic+"/json";
         HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
                 .GET()
-                .uri(URI.create(hostName + "/"+topic+"/json"))
                 .build();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
                 .thenAccept(response -> response.body()

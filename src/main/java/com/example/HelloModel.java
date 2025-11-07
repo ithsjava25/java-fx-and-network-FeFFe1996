@@ -41,6 +41,10 @@ public class HelloModel{
             return message;
     }
 
+    public void clearMessage() {
+            message.clear();
+    }
+
     public ObservableList<NtfyMessageDto> getMsgList() {
         return msgList;
     }
