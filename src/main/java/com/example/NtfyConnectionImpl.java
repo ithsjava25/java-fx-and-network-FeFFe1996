@@ -28,7 +28,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
     @Override
     public boolean send(String topic, String message) {
-        messageToJson newMessage = new messageToJson("mytopic", message);
+        messageToJson newMessage = new messageToJson(topic, message);
         String Json = mapper.writeValueAsString(newMessage);
 
         HttpRequest request = HttpRequest.newBuilder()
@@ -53,12 +53,11 @@ public class NtfyConnectionImpl implements NtfyConnection {
     }
 
     @Override
-    public void receive(Consumer<NtfyMessageDto> messageHandler) {
+    public void receive(String topic, Consumer<NtfyMessageDto> messageHandler) {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
-                .uri(URI.create(hostName + "/mytopic/json"))
+                .uri(URI.create(hostName + "/"+topic+"/json"))
                 .build();
-
         client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
                 .thenAccept(response -> response.body()
                         .map(s -> mapper.readValue(s, NtfyMessageDto.class))

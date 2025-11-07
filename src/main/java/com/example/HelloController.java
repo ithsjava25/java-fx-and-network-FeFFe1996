@@ -28,6 +28,9 @@ public class HelloController {
     @FXML
     private void initialize() {
         //messageBoard.setItems(model.getMsgList());
+        if(topic == null){
+            topic.setText("mytopic");
+        }
         messageList.setItems(model.getMessage());
         errorIsEmpty.setVisible(false);
         errorTopicIsEmpty.setVisible(false);

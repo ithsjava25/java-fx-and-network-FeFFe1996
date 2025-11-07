@@ -39,4 +39,10 @@ class HelloModelTest {
         verify(1, postRequestedFor(urlEqualTo("/mytopic"))
                 .withRequestBody(containing("Hello World")));
     }
+
+    @Test
+    void sendMessageIsntEmptyStrings(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con =  new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+        var model = new HelloModel(con);
+    }
 }

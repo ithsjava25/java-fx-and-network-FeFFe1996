@@ -58,11 +58,11 @@ public class HelloModel{
     }
 
     public void sendMsg() {
-        connection.send(getMsgTopic(), getMsgToSend());
+        connection.send(getMsgTopic().trim(), getMsgToSend().trim());
     }
 
     public void receiveMsg(){
-        connection.receive(m -> {
+        connection.receive(getMsgTopic(), m -> {
             Platform.runLater(
                     ()-> msgList.add(m));
             Platform.runLater(

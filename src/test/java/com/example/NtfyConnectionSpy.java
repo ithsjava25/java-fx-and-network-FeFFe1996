@@ -12,7 +12,7 @@ public class NtfyConnectionSpy implements NtfyConnection {
     }
 
     @Override
-    public void receive(Consumer<NtfyMessageDto> messageHandler) {
+    public void receive(String topic, Consumer<NtfyMessageDto> messageHandler) {
 
     }
 }
