@@ -65,13 +65,23 @@ public class HelloModel{
         connection.send(getMsgTopic().trim(), getMsgToSend().trim());
     }
 
-    public void receiveMsg(){
-        connection.receive(getMsgTopic(), m -> {
-            Platform.runLater(
-                    ()-> msgList.add(m));
-            Platform.runLater(
-                    () -> message.setAll(msgList.stream().map(NtfyMessageDto::message).collect(Collectors.toList()))
-            );
-        });
+    public boolean checkTopicIsNotNUll(String topic){
+        if(topic.trim().isEmpty()){
+            System.out.println("Error: topic cannot be empty");
+            return true;
+        }
+        System.out.println("Valid topic");
+        return false;
     }
+
+    public void receiveMsg(){
+            connection.receive(getMsgTopic(), m -> {
+                Platform.runLater(
+                        ()-> msgList.add(m));
+                Platform.runLater(
+                        () -> message.setAll(msgList.stream().filter(p -> p.topic().equals(getMsgTopic())).map(NtfyMessageDto::message).collect(Collectors.toList()))
+                );
+            });
+    }
+
 }

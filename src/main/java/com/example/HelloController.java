@@ -29,17 +29,14 @@ public class HelloController {
     @FXML
     private void initialize() {
         //messageBoard.setItems(model.getMsgList());
-        if(topic != null){
-            topic.setText("mytopic");
-            model.setMsgTopic(topic.getText());
-        }
 //        topic.textProperty().addListener((observable, oldValue, newValue) -> {
 //            System.out.println(newValue);
 //        }); used to se input in topic window
+        model.setMsgTopic(topic.getText());
         messageList.setItems(model.getMessage());
         errorIsEmpty.setVisible(false);
         errorTopicIsEmpty.setVisible(false);
-        model.receiveMsg();
+        submitButton.setDisable(true);
     }
 
     public HelloModel getModel() {
@@ -59,13 +56,15 @@ public class HelloController {
     }
 
     public void changeTopic(ActionEvent actionEvent) {
-        if (topic.getText().isEmpty()) {
+        model.setMsgTopic(topic.getText());
+        if (model.checkTopicIsNotNUll(model.getMsgTopic())) {
             errorTopicIsEmpty.setVisible(true);
             errorTopicIsEmpty.setText("Please enter a topic");
-        }
-        model.setMsgTopic(topic.getText());
+        }else {
+
         errorTopicIsEmpty.setVisible(false);
+        submitButton.setDisable(false);
         model.receiveMsg();
         model.clearMessage();
-    }
+    }}
 }

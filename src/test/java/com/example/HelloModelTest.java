@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -59,5 +60,15 @@ class HelloModelTest {
         model.setMsgTopic("   this topic   ");
 
         assertThat(model.getMsgTopic()).isEqualTo("thistopic");
+    }
+
+    @Test
+    void checkIfTopicIsNotEmpty(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+        var model = new HelloModel(con);
+
+        model.setMsgTopic("");
+
+        assertThat(!model.checkTopicIsNotNUll(model.getMsgTopic())).isFalse();
     }
 }

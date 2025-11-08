@@ -13,7 +13,7 @@
         <Label fx:id="yourTopic" text="Topic" />
         <Label fx:id="errorTopicIsEmpty" />
         <TextField fx:id="topic" maxWidth="400" prefHeight="30" />
-        <Button fx:id="changeTopicButton" text="Change Topic" onAction="#changeTopic"/>
+        <Button fx:id="changeTopicButton" text="Subscribe to topic" onAction="#changeTopic"/>
         <Label fx:id="yourMsg" text="your message"/>
         <Label fx:id="errorIsEmpty" />
         <TextField fx:id="msg" maxWidth="400" prefHeight="30" />
