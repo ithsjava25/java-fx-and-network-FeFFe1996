@@ -61,17 +61,29 @@ public class HelloModel{
         this.msgToSend.set(msgToSend.trim());
     }
 
-    public void sendMsg() {
-        connection.send(getMsgTopic().trim(), getMsgToSend().trim());
-    }
-
-    public boolean checkTopicIsNotNUll(String topic){
+    public boolean checkTopicIsNotEmpty(String topic){
         if(topic.trim().isEmpty()){
             System.out.println("Error: topic cannot be empty");
             return true;
         }
         System.out.println("Valid topic");
         return false;
+    }
+
+    public boolean checkMessageIsNotEmpty(String message){
+        if(message.isEmpty()){
+            System.out.println("Error: message cannot be empty");
+            return true;
+        } else if (message.isBlank()) {
+            System.out.println("Error: message cannot be blank");
+            return true;
+        }else {
+            return false;
+        }
+    }
+
+    public void sendMsg() {
+        connection.send(getMsgTopic().trim(), getMsgToSend().trim());
     }
 
     public void receiveMsg(){

@@ -44,11 +44,12 @@ public class HelloController {
     }
 
     public void submitMsg(ActionEvent actionEvent) {
-        if (msg.getText().isEmpty()) {
+        model.setMsgToSend(msg.getText());
+        if (model.checkMessageIsNotEmpty(model.getMsgToSend())) {
             errorIsEmpty.setVisible(true);
             errorIsEmpty.setText("Please enter a message");
         }else {
-            model.setMsgToSend(msg.getText());
+
             model.sendMsg();
             msg.clear();
             errorIsEmpty.setVisible(false);
@@ -57,7 +58,7 @@ public class HelloController {
 
     public void changeTopic(ActionEvent actionEvent) {
         model.setMsgTopic(topic.getText());
-        if (model.checkTopicIsNotNUll(model.getMsgTopic())) {
+        if (model.checkTopicIsNotEmpty(model.getMsgTopic())) {
             errorTopicIsEmpty.setVisible(true);
             errorTopicIsEmpty.setText("Please enter a topic");
         }else {

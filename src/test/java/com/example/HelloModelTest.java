@@ -69,6 +69,16 @@ class HelloModelTest {
 
         model.setMsgTopic("");
 
-        assertThat(!model.checkTopicIsNotNUll(model.getMsgTopic())).isFalse();
+        assertThat(!model.checkTopicIsNotEmpty(model.getMsgTopic())).isFalse();
+    }
+
+    @Test
+    void checkIfmessageIsNotAnEmptyString(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+        var model = new HelloModel(con);
+
+        model.setMsgToSend("    ");
+
+        assertThat(model.checkMessageIsNotEmpty(model.getMsgToSend())).isTrue();
     }
 }
