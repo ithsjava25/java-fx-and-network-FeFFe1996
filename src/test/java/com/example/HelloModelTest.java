@@ -29,7 +29,7 @@ class HelloModelTest {
 
     @Test
     @DisplayName("Send data to fake server for verification, ")
-    void sendMessageToFakeServer(WireMockRuntimeInfo wmRuntimeInfo) {
+    void sendMessageToFakeServer(WireMockRuntimeInfo wmRuntimeInfo) throws InterruptedException {
         var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
         var model = new HelloModel(con);
         model.setMsgToSend("Hello World");
@@ -40,6 +40,7 @@ class HelloModelTest {
                 .willReturn(ok())
                 .withHeader("Content-Type", equalTo("application/json")));
         model.sendMsg();
+        Thread.sleep(500);
         //verify call made to server
         verify(1, postRequestedFor(urlEqualTo("/"+messageToJson.topic+"/json"))
                 .withRequestBody(containing("Hello World")));
