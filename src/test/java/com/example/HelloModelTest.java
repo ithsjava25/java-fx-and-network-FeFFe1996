@@ -44,7 +44,7 @@ class HelloModelTest {
                 .withHeader("Content-Type", equalTo("application/json")));
         model.sendMsg();
         //verify call made to server
-        verify(1, postRequestedFor(urlEqualTo("/"+messageToJson.topic))
+        verify(1, postRequestedFor(urlEqualTo("/"+messageToJson.topic+"/json"))
                 .withRequestBody(containing("Hello World")));
     }
 
