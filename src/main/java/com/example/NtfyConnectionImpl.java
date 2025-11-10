@@ -30,25 +30,26 @@ public class NtfyConnectionImpl implements NtfyConnection {
     public boolean send(String topic, String message) {
         messageToJson newMessage = new messageToJson(topic, message);
         String Json = mapper.writeValueAsString(newMessage);
-        String url = hostName+"/"+topic+"/json";
+        //String url = hostName+"/"+topic+"/json"; used for testing fake server
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(Json))
                 //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
-                .uri(URI.create(url))
+                .uri(URI.create(hostName))
                 .build();
-            try {
-                //TODO: handle long blocking send request so application doesnt freeze
-                //1. use thread send message
-                //2. use async
+        //TODO: handle long blocking send request so application doesnt freeze
+        //1. use thread send message
+        //2. use async
+            Thread.ofPlatform().start(() -> {
+                try {
                 var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-                return true;
             } catch (IOException e) {
                 System.out.println("IOException sending message");
             } catch (InterruptedException e) {
                 System.out.println("Interrupted sending message");
             }
+        });
             return false;
     }
 
