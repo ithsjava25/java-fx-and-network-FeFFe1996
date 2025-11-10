@@ -1,21 +1,18 @@
 package com.example;
 
 
-import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import tools.jackson.databind.ObjectMapper;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.assertj.core.api.Assertions.as;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 
 @WireMockTest
 class HelloModelTest {
-    private final ObjectMapper mapper = new ObjectMapper();
     @Test
     @DisplayName("Given a model with MsgToSend when calling sendMsg then send")
     void sendMessageCallsConnectionWithMessageToSend(){
@@ -38,7 +35,6 @@ class HelloModelTest {
         model.setMsgToSend("Hello World");
         model.setMsgTopic("mytopic");
         messageToJson messageToJson = new messageToJson(model.getMsgTopic(),  model.getMsgToSend());
-        String Json = mapper.writeValueAsString(messageToJson);
         stubFor(post(urlPathMatching("/"+model.getMsgTopic()))
                 .willReturn(ok())
                 .withHeader("Content-Type", equalTo("application/json")));
