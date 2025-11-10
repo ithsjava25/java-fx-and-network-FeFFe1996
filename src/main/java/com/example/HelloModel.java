@@ -26,6 +26,17 @@ public class HelloModel{
         receiveMsg();
     }
 
+    private static void runOnFx(Runnable task){
+        try{
+            if (Platform.isFxApplicationThread()){
+                task.run();
+            } else {
+                Platform.runLater(task);
+            }
+        }catch(IllegalStateException notInitialized){
+            task.run();
+        }
+    }
     public String getMsgTopic() {
         return msgTopic.get();
     }
@@ -90,9 +101,9 @@ public class HelloModel{
 
     public void receiveMsg(){
             connection.receive(getMsgTopic(), m -> {
-                Platform.runLater(
+                runOnFx(
                         ()-> msgList.add(m));
-                Platform.runLater(
+                runOnFx(
                         () -> message.setAll(msgList.stream().filter(p -> p.topic().equals(getMsgTopic())).map(NtfyMessageDto::message).collect(Collectors.toList()))
                 );
             });
