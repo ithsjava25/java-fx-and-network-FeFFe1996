@@ -83,4 +83,14 @@ class HelloModelTest {
 
         assertThat(model.checkMessageIsNotEmpty(model.getMsgToSend())).isTrue();
     }
+
+    @Test
+    void testUpdateMessageTopicOnRunFX(WireMockRuntimeInfo wmRuntimeInfo) {
+        var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
+        var model = new HelloModel(con);
+
+        model.setMsgTopic("mytopic");
+
+        assertThat(model.getMsgTopic()).isEqualTo("mytopic");
+    }
 }
