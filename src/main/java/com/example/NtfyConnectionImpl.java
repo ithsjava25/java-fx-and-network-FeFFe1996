@@ -10,6 +10,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 public class NtfyConnectionImpl implements NtfyConnection {
@@ -45,7 +46,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
         String Json = mapper.writeValueAsString(newMessage);
         String url = hostName+"/"+ topic +"/json"; //used for testing fake server
         HttpRequest request = HttpRequest.newBuilder()
-                .timeout(Duration.ofSeconds(20))
+                .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(Json))
                 //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
@@ -61,11 +62,16 @@ public class NtfyConnectionImpl implements NtfyConnection {
                 .uri(URI.create(url))
                 .GET()
                 .build();
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
+
+        CompletableFuture<Void> receiveMsg = client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
                 .thenAccept(response -> response.body()
                         .map(s -> mapper.readValue(s, NtfyMessageDto.class))
                         .filter(message->message.event().equals("message"))
                         //.peek(System.out::println) //debugger to check messages that comes in
-                        .forEach(messageHandler));
+                        .forEach(messageHandler)).exceptionally(error -> {
+                    System.out.println("Error message: " + error.getMessage());
+                    return null;
+                });
+        receiveMsg.thenAccept(System.out::println);
     }
 }

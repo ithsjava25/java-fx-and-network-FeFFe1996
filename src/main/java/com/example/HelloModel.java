@@ -6,6 +6,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -85,6 +86,7 @@ public class HelloModel{
     public void sendMsg() {
         connection.send(getMsgTopic(), getMsgToSend());
     }
+
 
     public void receiveMsg(){
             connection.receive(getMsgTopic(), m -> {
