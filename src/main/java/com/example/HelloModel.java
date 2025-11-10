@@ -83,7 +83,7 @@ public class HelloModel{
     }
 
     public void sendMsg() {
-        connection.send(getMsgTopic().trim(), getMsgToSend().trim());
+        connection.send(getMsgTopic(), getMsgToSend());
     }
 
     public void receiveMsg(){
