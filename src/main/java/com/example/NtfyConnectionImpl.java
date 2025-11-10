@@ -30,7 +30,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
     public boolean send(String topic, String message) {
         messageToJson newMessage = new messageToJson(topic, message);
         String Json = mapper.writeValueAsString(newMessage);
-        //String url = hostName+"/"+topic+"/json"; used for testing fake server
+        String url = hostName+"/"+topic+"/json"; //used for testing fake server
         HttpRequest request = HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(20))
                 .header("Content-Type", "application/json")
@@ -43,13 +43,12 @@ public class NtfyConnectionImpl implements NtfyConnection {
         //2. use async
             Thread.ofPlatform().start(() -> {
                 try {
-                var response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException e) {
-                System.out.println("IOException sending message");
-            } catch (InterruptedException e) {
-                System.out.println("Interrupted sending message");
-            }
-        });
+                    var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                } catch (IOException e) {
+                    System.out.println("IOException sending message");
+                } catch (InterruptedException e) {
+                    System.out.println("Interrupted sending message");
+            }});
             return false;
     }
 

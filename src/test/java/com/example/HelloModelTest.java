@@ -28,14 +28,15 @@ class HelloModelTest {
     }
 
     @Test
-    @DisplayName("Send data to fake server for verification")
+    @DisplayName("Send data to fake server for verification, ")
     void sendMessageToFakeServer(WireMockRuntimeInfo wmRuntimeInfo) {
         var con = new NtfyConnectionImpl("http://localhost:"+wmRuntimeInfo.getHttpPort());
         var model = new HelloModel(con);
         model.setMsgToSend("Hello World");
         model.setMsgTopic("mytopic");
+        String url =  "http://localhost:"+wmRuntimeInfo.getHttpPort()+"/"+model.getMsgTopic()+"/json";
         messageToJson messageToJson = new messageToJson(model.getMsgTopic(),  model.getMsgToSend());
-        stubFor(post(urlPathMatching("/"+model.getMsgTopic()))
+        stubFor(post(urlMatching(url))
                 .willReturn(ok())
                 .withHeader("Content-Type", equalTo("application/json")));
         model.sendMsg();
