@@ -17,6 +17,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
     private final HttpClient client = HttpClient.newHttpClient();
     private final String hostName;
     private final ObjectMapper mapper = new ObjectMapper();
+    private boolean testChecker = false;
 
     public NtfyConnectionImpl(){
         Dotenv dotenv = Dotenv.load();
@@ -25,6 +26,14 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
     public NtfyConnectionImpl(String hostName){
         this.hostName = hostName;
+    }
+
+    public void setTestChecker(boolean testChecker){
+        this.testChecker = testChecker;
+    }
+
+    public boolean checkTest(){
+        return testChecker;
     }
 
     @Override
@@ -45,14 +54,23 @@ public class NtfyConnectionImpl implements NtfyConnection {
         messageToJson newMessage = new messageToJson(topic, message);
         String Json = mapper.writeValueAsString(newMessage);
         String url = hostName+"/"+ topic +"/json"; //used for testing fake server
-        HttpRequest request = HttpRequest.newBuilder()
+        if(checkTest()){
+            return HttpRequest.newBuilder()
+                    .timeout(Duration.ofSeconds(10))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(Json))
+                    //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
+                    .uri(URI.create(url))
+                    .build();
+        } else {
+        return HttpRequest.newBuilder()
                 .timeout(Duration.ofSeconds(10))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(Json))
                 //.POST(HttpRequest.BodyPublishers.ofString("Hello World")) //for testing purposes
                 .uri(URI.create(hostName))
                 .build();
-        return request;
+    }
     }
 
     @Override

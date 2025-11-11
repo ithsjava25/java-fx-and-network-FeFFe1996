@@ -1,6 +1,7 @@
 package com.example;
 
 
+import com.github.tomakehurst.wiremock.common.Json;
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo;
 import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import org.junit.jupiter.api.DisplayName;
@@ -34,15 +35,15 @@ class HelloModelTest {
         var model = new HelloModel(con);
         model.setMsgToSend("Hello World");
         model.setMsgTopic("mytopic");
-        String url =  "http://localhost:"+wmRuntimeInfo.getHttpPort()+"/"+model.getMsgTopic()+"/json";
-        messageToJson messageToJson = new messageToJson(model.getMsgTopic(),  model.getMsgToSend());
-        stubFor(post(urlMatching(url))
-                .willReturn(ok())
-                .withHeader("Content-Type", equalTo("application/json")));
+        con.setTestChecker(true);
+        stubFor(post(urlPathMatching("/" + model.getMsgTopic()+"/json"))
+                .willReturn(ok()
+                        .withHeader("Content-Type", "application/json")));
         model.sendMsg();
         Thread.sleep(500);
         //verify call made to server
-        verify(1, postRequestedFor(urlEqualTo("/"+messageToJson.topic+"/json"))
+        verify(1, postRequestedFor(urlEqualTo("/" + model.getMsgTopic()+"/json"))
+                .withHeader("Content-Type", equalTo("application/json"))
                 .withRequestBody(containing("Hello World")));
     }
 
