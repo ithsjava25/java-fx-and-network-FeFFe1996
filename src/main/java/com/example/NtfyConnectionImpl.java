@@ -96,7 +96,7 @@ public class NtfyConnectionImpl implements NtfyConnection {
                             try {
                                 return mapper.readValue(s, NtfyMessageDto.class);
                             }catch (IllegalStateException e){
-                                throw new IllegalStateException("Failure to serialize: ",e);
+                                throw new IllegalStateException("Failure to parse: ",e);
                             }
                         })
                         .filter(message->message.event().equals("message"))
