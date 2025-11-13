@@ -1,5 +1,7 @@
 package com.example;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.github.cdimascio.dotenv.Dotenv;
 import tools.jackson.databind.ObjectMapper;
 
@@ -38,21 +40,29 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
     @Override
     public boolean send(String topic, String message) {
-            Thread.ofPlatform().start(() -> {
                 try {
                     HttpRequest request = getHttpRequest(topic, message);
                     var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+                    return true;
                 } catch (IOException e) {
                     System.out.println("IOException sending message");
+                    return false;
                 } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
                     System.out.println("Interrupted sending message");
-            }});
-            return false;
+                    return false;
+            }
     }
 
     private HttpRequest getHttpRequest(String topic, String message) {
         messageToJson newMessage = new messageToJson(topic, message);
-        String Json = mapper.writeValueAsString(newMessage);
+        final String Json;
+        try {
+            Json = mapper.writeValueAsString(newMessage);
+        } catch (IllegalStateException e){
+            throw new IllegalStateException("Failure to serialize: ", e);
+        }
+
         String url = hostName+"/"+ topic +"/json"; //used for testing fake server
         if(checkTest()){
             return HttpRequest.newBuilder()
@@ -83,13 +93,20 @@ public class NtfyConnectionImpl implements NtfyConnection {
 
         CompletableFuture<Void> receiveMsg = client.sendAsync(request, HttpResponse.BodyHandlers.ofLines())
                 .thenAccept(response -> response.body()
-                        .map(s -> mapper.readValue(s, NtfyMessageDto.class))
+                        .map(s -> {
+                            try {
+                                return mapper.readValue(s, NtfyMessageDto.class);
+                            }catch (IllegalStateException e){
+                                throw new IllegalStateException("Failure to serialize: ",e);
+                            }
+                        })
                         .filter(message->message.event().equals("message"))
                         //.peek(System.out::println) //debugger to check messages that comes in
                         .forEach(messageHandler)).exceptionally(error -> {
                     System.out.println("Error message: " + error.getMessage());
                     return null;
                 });
+
         receiveMsg.thenAccept(System.out::println);
     }
 }

@@ -23,7 +23,6 @@ public class HelloModel{
 
     public HelloModel(NtfyConnection connection){
         this.connection = connection;
-        receiveMsg();
     }
 
     private static void runOnFx(Runnable task){
@@ -46,7 +45,13 @@ public class HelloModel{
     }
 
     public void setMsgTopic(String msgTopic) {
-        runOnFx(() -> this.msgTopic.set(msgTopic.trim().replaceAll(" ", "")));
+        runOnFx(() -> {
+            var normalizeString = msgTopic.trim().replaceAll(" ", "");
+            this.msgTopic.set(normalizeString);
+            if (!normalizeString.isEmpty()){
+                receiveMsg();
+            }
+        });
     }
 
     public ObservableList<String> getMessage() {
@@ -100,6 +105,10 @@ public class HelloModel{
 
 
     public void receiveMsg(){
+        var currentTopic = getMsgTopic();
+        if(currentTopic == null || currentTopic.isBlank()){
+            return;
+        }
             connection.receive(getMsgTopic(), m -> {
                 runOnFx(
                         ()-> msgList.add(m));

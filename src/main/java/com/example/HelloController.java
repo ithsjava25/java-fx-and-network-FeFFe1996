@@ -49,7 +49,6 @@ public class HelloController {
             errorIsEmpty.setVisible(true);
             errorIsEmpty.setText("Please enter a message");
         }else {
-
             model.sendMsg();
             msg.clear();
             errorIsEmpty.setVisible(false);
@@ -62,10 +61,8 @@ public class HelloController {
             errorTopicIsEmpty.setVisible(true);
             errorTopicIsEmpty.setText("Please enter a topic");
         }else {
-
         errorTopicIsEmpty.setVisible(false);
         submitButton.setDisable(false);
-        model.receiveMsg();
         model.clearMessage();
     }}
 }
