@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.control.Label?>
 
-<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.HelloController">
-    <children>
-        <Label fx:id="messageLabel" text="Hello, JavaFX!" />
-    </children>
-</StackPane>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox stylesheets="@../../css/style.css" alignment="TOP_CENTER" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.HelloController">
+    <Label fx:id="messageLabel" text="Welcome to the messageboard" alignment="CENTER"/>
+<!--    <ListView fx:id="messageBoard" maxWidth="300.0"  /> used for testing and show all entries from http GET-->
+    <ListView fx:id="messageList" />
+
+    <VBox fx:id="newMessage" alignment="CENTER" spacing="10">
+        <Label fx:id="yourTopic" text="Topic" />
+        <Label fx:id="errorTopicIsEmpty" />
+        <TextField fx:id="topic" maxWidth="400" prefHeight="30" />
+        <Button fx:id="changeTopicButton" text="Subscribe to topic" onAction="#changeTopic"/>
+        <Label fx:id="yourMsg" text="your message"/>
+        <Label fx:id="errorIsEmpty" />
+        <TextField fx:id="msg" maxWidth="400" prefHeight="30" />
+        <Button fx:id="submitButton" text="Submit" onAction="#submitMsg"/>
+    </VBox>
+</VBox>

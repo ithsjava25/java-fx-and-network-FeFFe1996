@@ -1,0 +1,41 @@
+.label#messageLabel{
+    -fx-font-size: 30px;
+    -fx-padding: 10px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.label#yourTopic{
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+.label#yourMsg{
+    -fx-font-size: 20px;
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+}
+
+.label#errorTopicIsEmpty{
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+.label#errorIsEmpty{
+    -fx-text-fill: red;
+    -fx-font-weight: bold;
+}
+
+.list-view{
+    -fx-max-width: 400px;
+    -fx-padding: 10px;
+    -fx-cell-size: 25px;
+    -fx-font-size: 15px;
+}
+
+.text-field{
+    -fx-font-size: 15px;
+}
+
+.button{
+    -fx-font-size: 15px;
+}
